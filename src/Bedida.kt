@@ -1,12 +1,20 @@
-abstract class Bedida{
+open class Bedida(id: Int, cantidad: Double, precio: Double){
 
-    abstract fun agregarBebida()
+    fun agregarBebida(){
 
-     abstract fun elminarBebida()
+    }
 
-    abstract fun MostrarBebida()
+     fun elminarBebida(){
 
-    abstract fun calularPrecio()
+     }
+
+    fun mostrarBebida(){
+
+    }
+
+     fun calcularPrecio(){
+
+     }
 
 
 
