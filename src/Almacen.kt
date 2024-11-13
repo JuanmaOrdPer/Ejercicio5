@@ -3,13 +3,14 @@ class Almacen {
     val estanteria: Array<Array<Bebida?>> = Array(5) { arrayOfNulls(5) }
 
 
-    fun agregarBebidad(bebida: Bebida?): Boolean {
+    fun agregarBebida(bebida: Bebida?): Boolean {
         if (bebida != null) {
-            if (buscarBebida(bebida.id) != null) {
+            if (buscarBebida(bebida.id)) {
                 println("Bebida con ID ${bebida.id} ya existe. No se puede agregar.")
                 return false
             }
         }
+
         for (columna in estanteria.indices) {
             for (fila in estanteria[columna].indices) {
                 if (estanteria[fila][columna] == null) {
@@ -23,33 +24,33 @@ class Almacen {
         return false
     }
 
-    fun buscarBebida(id: Int): Bebida? {
+    fun buscarBebida(id: Int): Boolean {
         for (fila in estanteria) {
             for (bebida in fila) {
                 if (bebida?.id == id)
-                    return bebida
+                    return true
             }
         }
-        return null
+        return false
     }
 
-    fun borrarBebida(id: Int): Boolean {
+    fun borrarBebida(id: Int) {
         for (fila in estanteria.indices) {
             for (columna in estanteria[fila].indices) {
                 if (estanteria[fila][columna]?.id == id) {
                     estanteria[fila][columna] = null
                     println("Bebida con ID: $id borrada")
-                    return true
+
                 }
             }
         }
         println("El ID $id no existe en la estanteria")
-        return false
+
     }
 
-    fun mostrarBebida(){
-        for (fila in estanteria){
-            for (columna in fila){
+    fun mostrarBebida() {
+        for (fila in estanteria) {
+            for (columna in fila) {
                 columna?.let {
                     println(it)
                 }
@@ -82,36 +83,48 @@ class Almacen {
 
     fun calcularPrecio(marca: String): Double {
         var total = 0.0
-        for (fila in estanteria) {
-            for (columna in fila) {
-                if (columna?.marca == marca)
-                    total += columna.calcularPrecio()
+        if (estanteria.isEmpty()) {
+            total = 0.0
+            println("Almacen vacio")
+        } else {
+            for (fila in estanteria) {
+                for (columna in fila) {
+                    if (columna?.marca == marca)
+                        total += columna.calcularPrecio()
+                }
             }
+            println(
+                "---------------------------------"
+                        + "\nEl total de la marca $marca es:"
+            )
         }
-        println(
-            "---------------------------------"
-                    + "\nEl total de la marca $marca es:"
-        )
         return total
+
     }
 
 
     fun calcularPrecio(columna: Int): Double {
         var total = 0.0
-        if (columna !in 0..4) {
-            println("Columna fuera de rango")
+        if (estanteria.isEmpty()) {
             total = 0.0
+            println("Almacen vacio")
         } else {
-            for (fila in estanteria.indices)
-                estanteria[fila][columna]?.let {
-                    total += it.calcularPrecio()
-                }
+            if (columna !in 0..4) {
+                println("Columna fuera de rango")
+                total = 0.0
+            } else {
+                for (fila in estanteria.indices)
+                    estanteria[fila][columna]?.let {
+                        total += it.calcularPrecio()
+                    }
+            }
+            println(
+                "-------------------------------------+" +
+                        "\nEl total de la columna $columna es:"
+            )
         }
-        println(
-            "-------------------------------------+" +
-                    "\nEl total de la columna $columna es:"
-        )
         return total
     }
+
 
 }
